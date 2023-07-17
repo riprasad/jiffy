@@ -5,11 +5,20 @@ import (
 
 	"github.com/riprasad/jiffy/pkg/cve"
 	"github.com/riprasad/jiffy/pkg/issue"
+	"github.com/spf13/viper"
 )
 
 func main() {
 
-	jql := `project = IPT AND status in ("Selected for Development") AND labels = security ORDER BY status DESC, created DESC, duedate`
+	viper.SetConfigFile(".env")
+	viper.ReadInConfig()
+
+	fmt.Println("port is: ", viper.Get("token"))
+	fmt.Println("username is: ", viper.Get("jql"))
+
+	jql := viper.Get("jql").(string)
+
+	//jql := `project = IPT AND status in ("Selected for Development") AND labels = security ORDER BY status DESC, created DESC, duedate`
 	issues := issue.GetInfo(jql)
 
 	cves := cve.CurateCveDetails(issues)

@@ -11,5 +11,5 @@ The main motivation for bringing jiffy to life was the need for auto-curating CV
 - Order the CVEs by priority of impact (first critical, then important, then moderate, then low).
 - Identify CVEs of the same priority and order them numerically by ID.
 
-Wouldn't it be great to get all this information compiled for you automatically? Let jiffy take care of that for you. It automates this process and also writes release notes for you, creating something like this:
+Wouldn't it be great to get all this information compiled for you automatically? Let jiffy take care of that for you. It automates this process and curates all the required details in a specific format to file RHSA advisory.
 
