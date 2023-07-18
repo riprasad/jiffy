@@ -13,14 +13,10 @@ func main() {
 	viper.SetConfigFile(".env")
 	viper.ReadInConfig()
 
-	fmt.Println("port is: ", viper.Get("token"))
-	fmt.Println("username is: ", viper.Get("jql"))
-
+	token := viper.Get("token").(string)
 	jql := viper.Get("jql").(string)
 
-	//jql := `project = IPT AND status in ("Selected for Development") AND labels = security ORDER BY status DESC, created DESC, duedate`
-	issues := issue.GetInfo(jql)
-
+	issues := issue.GetInfo(token, jql)
 	cves := cve.CurateCveDetails(issues)
 
 	for _, cveInfo := range cves {

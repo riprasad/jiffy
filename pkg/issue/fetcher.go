@@ -6,9 +6,9 @@ import (
 	"github.com/andygrunwald/go-jira"
 )
 
-func GetInfo(jql string) []jira.Issue {
+func GetInfo(token string, jql string) []jira.Issue {
 	tp := jira.BearerAuthTransport{
-		Token: "ODg1ODg0NTM1NDA4OuWMXiwdwXnSTQ4bbjowWQHP51ec",
+		Token: token,
 	}
 
 	jiraClient, _ := jira.NewClient(tp.Client(), "https://issues.redhat.com/")
