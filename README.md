@@ -26,7 +26,9 @@ First, generate a JIRA token by following the below steps:
 
 Secondly, you need to pass a list of the CVEs that have been fixed for a particular release. This can be done by [creating a filter in Jira](https://jexo.io/blog/how-to-create-filter-jira/), aka [JQL(Jira Query Language)](https://support.atlassian.com/jira-service-management-cloud/docs/use-advanced-search-with-jira-query-language-jql/). For example, I create the below filter that checks the following:
 
-> project = IPT AND status in ("Selected for Development") AND labels = security ORDER BY status DESC, created DESC, duedate
+```jql
+project = IPT AND status in ("Selected for Development") AND labels = security ORDER BY status DESC, created DESC, duedate
+```
 
 - `project = IPT`: This part filters the issues to only those belonging to the project with the key "IPT". It restricts the search to a specific project in Jira.
 
