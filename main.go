@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/riprasad/jiffy/cmd/jiffy"
+	jiffy "github.com/riprasad/jiffy/cmd/jiffy"
 )
 
 func main() {
