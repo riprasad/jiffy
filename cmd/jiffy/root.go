@@ -3,11 +3,9 @@ package jiffy
 import (
 	"fmt"
 	"os"
-	"text/tabwriter"
 
+	"github.com/riprasad/jiffy/cmd/jiffy/rhsa"
 	"github.com/riprasad/jiffy/pkg/config"
-	"github.com/riprasad/jiffy/pkg/cve"
-	"github.com/riprasad/jiffy/pkg/issue"
 	"github.com/spf13/cobra"
 )
 
@@ -21,40 +19,13 @@ var rootCmd = &cobra.Command{
 }
 
 // will show CVE infos like BugzillaID, JiraKey, AffectedPackage, Summary and ID
-var Info = &cobra.Command{
-	Use:   "info",
-	Short: "Print CVEs info of passed token and jql",
-	Run: func(cmd *cobra.Command, args []string) {
-		cfg := config.GetConfiguration()
-		if cfg.JiraToken == "" || cfg.Jql == "" {
-			fmt.Println(`Either Jira Token or Jql is empty. Please pass both values in "config.yaml" to continue :)`)
-			os.Exit(1)
-		}
-
-		token := cfg.JiraToken
-		jql := cfg.Jql
-		issues := issue.GetInfo(token, jql)
-		cves := cve.CurateCveDetails(issues)
-
-		// print in proper table form on stdout
-		w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.TabIndent)
-		fmt.Fprintf(w, "%s\t%s\t\n", "Bugzilla_ID", "Jira_Key")
-		for _, cveInfo := range cves {
-			fmt.Printf("%s %s ", cveInfo.BugzillaID, cveInfo.JiraKey)
-		}
-		w.Flush()
-
-		fmt.Println()
-		fmt.Println()
-
-		// print in proper table form on stdout
-		w = tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.TabIndent)
-		fmt.Fprintf(w, "%s\t%s\t%s\t\n", "ID", "Affected_Package", "Summary")
-		for _, cveInfo := range cves {
-			fmt.Printf("%s %s %s", cveInfo.ID, cveInfo.AffectedPackage, cveInfo.Summary)
-		}
-		w.Flush()
-	},
+func RhsaCurate() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "rhsa",
+		Short: "Print CVEs info of passed token and jql",
+	}
+	cmd.AddCommand(rhsa.Curate())
+	return cmd
 }
 
 func Execute() {
@@ -67,5 +38,5 @@ func Execute() {
 func init() {
 	config.InitConfiguration()
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.AddCommand(Info)
+	rootCmd.AddCommand(RhsaCurate())
 }
